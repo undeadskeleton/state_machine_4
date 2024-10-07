@@ -152,7 +152,7 @@ shape = SubResource("CapsuleShape2D_rodyd")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kxslu")
 animation = &"move"
-frame_progress = 0.00743387
+frame_progress = 0.507094
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
