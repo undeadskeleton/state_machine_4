@@ -1,9 +1,10 @@
 extends State
 
-var Speed : int = 300
+
+@export var animation_name : String
 
 func enter():
-	print("entered move")
+	player.ani2d.play(animation_name)
 
 func update(delta):
 	if player.velocity.x == 0:
@@ -14,8 +15,12 @@ func update(delta):
 	
 func physics_update(delta):
 	if player.dir:
-		print(player.dir,"in move")
-		player.velocity.x = player.dir * Speed
+		player.velocity.x = player.dir * player.Speed
 	else:
-		player.velocity.x = move_toward(player.velocity.x,0,Speed)
+		player.velocity.x = move_toward(player.velocity.x,0,player.Speed)
+		
+	if player.velocity.x < 0:
+		player.ani2d.flip_h = true
+	elif player.velocity.x > 0:
+		player.ani2d.flip_h = false
 	player.move_and_slide()

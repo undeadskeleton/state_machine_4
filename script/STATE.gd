@@ -2,13 +2,12 @@ extends Node
 
 class_name State
 
-@export var animation_name : String
-
 signal Transitioned
 @export var player : CharacterBody2D
-func enter():
-	player.ani2d.play(animation_name)
 
+func enter():
+	pass
+	
 func update(delta):
 	pass
 	

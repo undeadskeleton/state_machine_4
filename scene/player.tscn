@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://dowdme53pspln"]
+[gd_scene load_steps=31 format=3 uid="uid://dowdme53pspln"]
 
 [ext_resource type="Texture2D" uid="uid://c2autnt857cb5" path="res://state_machine_4/assets/Dacian Warrior Animated Pixel-Art 2D/Fall/50x50/Fall 0 Sprite Sheet.png" id="1_6ye7s"]
 [ext_resource type="Script" path="res://state_machine_4/script/player.gd" id="1_cnvew"]
+[ext_resource type="Texture2D" uid="uid://curii3fs61gf7" path="res://state_machine_4/assets/Dacian Warrior Animated Pixel-Art 2D/Run/50x50/Run 1-2.png" id="2_1rhlb"]
 [ext_resource type="Texture2D" uid="uid://c1ye5fg74x4cp" path="res://state_machine_4/assets/Dacian Warrior Animated Pixel-Art 2D/Idle/50x50/Idle Sprite 1.png" id="2_a6gsv"]
 [ext_resource type="Texture2D" uid="uid://bfnwupoxl6ba7" path="res://state_machine_4/assets/Dacian Warrior Animated Pixel-Art 2D/Jump/50x50/Jump Sprite 0.png" id="3_8hkyj"]
 [ext_resource type="Texture2D" uid="uid://rbe2npmuk0nf" path="res://state_machine_4/assets/Dacian Warrior Animated Pixel-Art 2D/Run/50x50/Run Sprite 1.png" id="4_bikjj"]
@@ -10,9 +11,14 @@
 [ext_resource type="Script" path="res://state_machine_4/script/move.gd" id="8_wifv1"]
 [ext_resource type="Script" path="res://state_machine_4/script/jump.gd" id="9_d4m3y"]
 [ext_resource type="Script" path="res://state_machine_4/script/fall.gd" id="10_4agtf"]
+[ext_resource type="Script" path="res://state_machine_4/script/dash.gd" id="12_vqfxu"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rodyd"]
 radius = 7.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2lmh"]
+atlas = ExtResource("2_1rhlb")
+region = Rect2(0, 0, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ufhqp"]
 atlas = ExtResource("1_6ye7s")
@@ -78,6 +84,14 @@ region = Rect2(150, 0, 50, 37)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_m2lmh")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ufhqp")
 }, {
 "duration": 1.0,
@@ -122,7 +136,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -144,6 +158,7 @@ animations = [{
 
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_cnvew")
+Speed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -151,8 +166,8 @@ shape = SubResource("CapsuleShape2D_rodyd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kxslu")
-animation = &"move"
-frame_progress = 0.507094
+animation = &"dash"
+autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -182,8 +197,21 @@ script = ExtResource("10_4agtf")
 animation_name = "fall"
 player = NodePath("../..")
 
+[node name="DASH" type="Node" parent="STATE_MACHIINE" node_paths=PackedStringArray("player")]
+script = ExtResource("12_vqfxu")
+animation = "dash"
+dash_distance = 300.0
+player = NodePath("../..")
+
+[node name="Timer" type="Timer" parent="STATE_MACHIINE/DASH"]
+wait_time = 0.2
+
 [node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -21.0
+offset_top = -25.0
+offset_right = 26.0
+offset_bottom = -2.0
 text = "STATE
 "
+
+[connection signal="timeout" from="STATE_MACHIINE/DASH/Timer" to="STATE_MACHIINE/DASH" method="_on_timer_timeout"]

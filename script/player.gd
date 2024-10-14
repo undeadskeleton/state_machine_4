@@ -6,11 +6,14 @@ const JUMP_VELOCITY = -400.0
 var jump_input: bool
 var dir : int
 var dash : bool
+@export var Speed : int = 0
 #references
 @onready var ani2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
-	pass
+	jump_input = false
+	dash = false
+	
 
 func _physics_process(delta: float) -> void:
 	player_input(delta)
@@ -34,8 +37,7 @@ func player_input(delta):
 		#velocity.y = JUMP_VELOCITY
 	if Input.is_action_just_pressed("dash"):
 		dash = true
-	else:
-		dash = false
+	
 
 func handle_animation():
 	if velocity.x == 0:
